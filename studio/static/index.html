@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#242c25">
+    <title>商品上新工作台 · Launch Studio</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script defer src="/static/app.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">↗</span><div>Launch Studio<small>跨境商品上新</small></div></div>
+      <nav aria-label="工作台导航">
+        <button type="button" data-page="launch" aria-current="page"><span aria-hidden="true">＋</span>上新任务</button>
+        <button type="button" data-page="products"><span aria-hidden="true">▤</span>商品资料</button>
+        <button type="button" data-page="skills"><span aria-hidden="true">◇</span>技能与模板</button>
+        <button type="button" data-page="history"><span aria-hidden="true">◷</span>历史与草稿</button>
+      </nav>
+      <div class="sidebar-foot"><span class="signal"></span><span id="mode">正在加载</span></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><span id="breadcrumb">上新任务</span><button id="new-task" class="secondary" type="button">＋ 新任务</button></header>
+      <main id="page" tabindex="-1"><p class="loading">正在加载工作台…</p></main>
+    </div>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

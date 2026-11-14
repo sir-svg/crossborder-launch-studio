@@ -1,0 +1,68 @@
+[
+  {
+    "sku": "LS-1001",
+    "name": "三层桌面收纳架",
+    "source": "内置演示样例",
+    "facts": [
+      {"label":"层数","value":"3 层"},
+      {"label":"材质","value":"粉末涂层钢"},
+      {"label":"尺寸","value":"32 × 21 × 30 cm"},
+      {"label":"颜色","value":"哑光黑"},
+      {"label":"包装清单","value":"收纳架、紧固件、安装说明"},
+      {"label":"承重","value":""}
+    ],
+    "features": ["分层收纳桌面文具", "开放式取物", "可摆放在书桌与工作台", "哑光黑外观", "随附安装说明"],
+    "keywords": ["desk shelf", "desktop organizer", "tiered shelf", "Schreibtischregal"],
+    "reviews": [
+      {"id":"R101","rating":5,"text":"把笔记本和便签分开摆放之后，桌面清爽多了。","source":"演示评论"},
+      {"id":"R102","rating":4,"text":"开放的架子拿笔很方便，哑光黑和我的书桌也很搭。","source":"演示评论"},
+      {"id":"R103","rating":3,"text":"尺寸比我以为的小。买之前应该先量一下桌面空间。","source":"演示评论"},
+      {"id":"R104","rating":4,"text":"照着说明可以装起来，装螺丝时需要对齐。","source":"演示评论"}
+    ],
+    "examples": {
+      "en-US": {
+        "title":"3-Tier Desktop Organizer Shelf, Matte Black Steel Desk Storage Rack",
+        "bullets":["Three open tiers help separate notebooks, stationery and everyday desk items.", "Open shelves keep frequently used essentials within reach.", "Matte black powder-coated steel suits a home office or workbench.", "Measures 32 × 21 × 30 cm. Check your desk space before setup.", "Includes the shelf, fasteners and assembly instructions."],
+        "description":"Give everyday desk items a dedicated place with this three-tier organizer. The open shelves make it easy to see and reach stationery. Check the listed dimensions against your available space and follow the included assembly instructions.",
+        "search_terms":"desk shelf desktop organizer tiered shelf office storage"
+      },
+      "de-DE": {
+        "title":"Schreibtischregal mit 3 Ebenen, Organizer aus pulverbeschichtetem Stahl, Mattschwarz",
+        "bullets":["Drei offene Ebenen für Notizbücher und Schreibtischzubehör.", "Häufig benötigte Gegenstände bleiben gut erreichbar.", "Mattschwarzer, pulverbeschichteter Stahl passt ins Arbeitszimmer.", "Maße: 32 × 21 × 30 cm. Vor dem Aufbau den Platz prüfen.", "Lieferumfang: Regal, Befestigungsteile und Montageanleitung."],
+        "description":"Das offene Regal hilft beim Sortieren von Büroartikeln. Vergleichen Sie die Maße mit der verfügbaren Stellfläche und beachten Sie die beigefügte Montageanleitung.",
+        "search_terms":"schreibtischregal organizer büroablage tischregal"
+      }
+    }
+  },
+  {
+    "sku": "LS-1002",
+    "name": "折叠旅行收纳包",
+    "source": "内置演示样例",
+    "facts": [
+      {"label":"材质","value":"聚酯纤维"},
+      {"label":"尺寸","value":"26 × 18 × 9 cm"},
+      {"label":"颜色","value":"鼠尾草绿"},
+      {"label":"包装清单","value":"收纳包"}
+    ],
+    "features": ["可折叠", "拉链开合", "整理线缆和小物", "旅行时可放进行李箱"],
+    "keywords": ["travel pouch", "packing organizer", "Reisetasche"],
+    "reviews": [
+      {"id":"R201","rating":5,"text":"出差时把线缆和充电头装在一起，找起来很方便。","source":"演示评论"},
+      {"id":"R202","rating":3,"text":"适合小物，我的大电源适配器放进去会挤。","source":"演示评论"}
+    ],
+    "examples": {
+      "en-US": {
+        "title":"Foldable Travel Organizer Pouch, Zippered Polyester Bag, Sage Green",
+        "bullets":["Organize small accessories and cables while packing.", "Fold the empty pouch for storage between trips.", "Zipper closure keeps the contents together.", "Measures 26 × 18 × 9 cm. Check the dimensions of your items.", "Includes a sage green polyester travel pouch."],
+        "description":"Pack your everyday travel accessories in a dedicated pouch. The foldable shape fits into a packing routine and stores compactly when empty.",
+        "search_terms":"travel pouch packing organizer cable storage zipper bag"
+      },
+      "de-DE": {
+        "title":"Faltbare Reise-Organisationstasche aus Polyester mit Reißverschluss, Salbeigrün",
+        "bullets":["Für Kabel und kleine Reiseutensilien.", "Leer lässt sich die Tasche zusammenfalten.", "Ein Reißverschluss hält den Inhalt zusammen.", "Maße: 26 × 18 × 9 cm. Größe der Gegenstände vorab prüfen.", "Lieferumfang: eine salbeigrüne Tasche aus Polyester."],
+        "description":"Eine faltbare Tasche für kleine Dinge auf Reisen. Verstauen Sie Kabel und Zubehör gesammelt im Gepäck.",
+        "search_terms":"reise organizer kabeltasche packtasche reißverschluss"
+      }
+    }
+  }
+]
