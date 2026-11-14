@@ -1,0 +1,94 @@
+x-studio: &studio
+  build: .
+  environment: &studio-env
+    APP_ENVIRONMENT: production
+    AUTH_ENABLED: "true"
+    ALLOW_DEMO: "false"
+    EMBEDDED_WORKER: "false"
+    DATABASE_URL: ${DATABASE_URL:?set DATABASE_URL in .env}
+    ALLOWED_HOSTS: ${ALLOWED_HOSTS:?set ALLOWED_HOSTS in .env}
+    PUBLIC_ORIGIN: ${PUBLIC_ORIGIN:?set PUBLIC_ORIGIN in .env}
+    LLM_BASE_URL: ${LLM_BASE_URL:?set LLM_BASE_URL in .env}
+    LLM_API_KEY: ${LLM_API_KEY:?set LLM_API_KEY in .env}
+    LLM_MODEL: ${LLM_MODEL:-deepseek-v4.1-flash-1017}
+  depends_on:
+    postgres:
+      condition: service_healthy
+  restart: unless-stopped
+  read_only: true
+  tmpfs:
+    - /tmp
+  security_opt:
+    - no-new-privileges:true
+  networks:
+    - backend
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: studio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      STUDIO_DATABASE_PASSWORD: ${STUDIO_DATABASE_PASSWORD:?set STUDIO_DATABASE_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./deploy/db-init.sh:/docker-entrypoint-initdb.d/01-studio.sh:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "postgres", "-d", "studio"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+    networks:
+      - backend
+  api:
+    <<: *studio
+    environment:
+      <<: *studio-env
+      BOOTSTRAP_EMAIL: ${BOOTSTRAP_EMAIL:-}
+      BOOTSTRAP_PASSWORD: ${BOOTSTRAP_PASSWORD:-}
+      BOOTSTRAP_WORKSPACE: ${BOOTSTRAP_WORKSPACE:-上新工作区}
+    command: ["python", "-m", "uvicorn", "studio.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "172.29.61.10"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=4).close()"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+  worker:
+    <<: *studio
+    command: ["python", "-m", "studio.worker"]
+    stop_grace_period: 20s
+    environment:
+      <<: *studio-env
+      WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-2}
+  proxy:
+    image: caddy:2-alpine
+    environment:
+      STUDIO_DOMAIN: ${STUDIO_DOMAIN:?set STUDIO_DOMAIN in .env}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      backend:
+        ipv4_address: 172.29.61.10
+    restart: unless-stopped
+
+networks:
+  backend:
+    ipam:
+      config:
+        - subnet: 172.29.61.0/24
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:

@@ -1,7 +1,7 @@
 from typing import Annotated, Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints, field_validator
 
 MARKETS = {
     "US": {"label": "Amazon 美国站", "language": "en-US", "language_name": "英语"},
@@ -22,6 +22,20 @@ Line = Annotated[str, StringConstraints(strip_whitespace=True, max_length=600)]
 
 class Input(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    @field_validator("*")
+    @classmethod
+    def valid_text(cls, value):
+        items = value if isinstance(value, list) else [value]
+        for item in items:
+            if isinstance(item, str):
+                if "\x00" in item:
+                    raise ValueError("文字不能包含空字符。")
+                try:
+                    item.encode("utf-8")
+                except UnicodeError as exc:
+                    raise ValueError("文字编码无效。") from exc
+        return value
 
 
 class Fact(Input):
