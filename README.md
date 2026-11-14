@@ -50,7 +50,7 @@ docker compose ps
 docker compose logs --tail=100 api worker
 ~~~
 
-用管理员账号进入站点，添加一个独立的审核员。先使用非敏感样例数据提交任务，确认两次模型调用、审核和下载都正常，再导入真实资料。模型请求会传送商品资料、选中的评论和任务说明给所配置的服务商。运行记录保留耗时、用量和错误类型。
+用管理员账号进入站点，添加一个独立的审核员。先录入非敏感样例商品和至少一条评论，提交任务，确认两次模型调用、审核和下载都正常，再导入真实资料。模型请求会传送商品资料、选中的评论和任务说明给所配置的服务商。运行记录保留耗时、用量和错误类型。
 
 ## 数据和运行
 
@@ -69,7 +69,7 @@ flowchart LR
 - 每个任务同一时刻由一位 Worker 持有租约。Worker 停止续约后，另一位可以重新运行任务。已经过期的 Worker 无法提交结果。恢复可能重复调用外部模型，因此需要留意模型用量。连续三次中断后任务进入失败状态，可按原资料重试。
 - 页面「运行状态」显示队列、审核和 Worker 最近心跳。容器内可用 /health/live 和 /health/ready 检查 API 与数据库。生产配置校验数据库、账号、站点和模型，进程启动时会拒绝缺失的关键配置。
 - 所有者负责初始账号发放。邮箱是内部登录标识，面向不互信团队开放注册前，需要接入经验证的邀请、身份服务及找回密码流程。
-- 使用 PostgreSQL 备份并定期验证恢复。升级前备份，在独立测试数据库试跑迁移和审核。备份导出示例使用 PostgreSQL 官方工具。[备份与恢复](https://www.postgresql.org/docs/current/backup-dump.html)
+- 升级前备份数据库，在独立测试库试跑迁移和审核。下方备份保存数据库内容，恢复到新实例时先创建 studio 登录角色。数据库账号密码在第一次创建数据卷时设置，轮换时需在 PostgreSQL 中同步修改对应账号的密码，再更新配置。[备份与恢复](https://www.postgresql.org/docs/current/backup-dump.html)
 
 ~~~sh
 docker compose exec -T postgres pg_dump -U postgres -Fc studio > studio-backup.dump
@@ -82,4 +82,4 @@ uv run --locked ruff check studio tests
 uv run --locked pytest -q
 ~~~
 
-设置 TEST_DATABASE_URL 可额外运行 PostgreSQL 集成检查。测试在独立临时 schema 执行。另有单独的权限、模型格式、引用校验、任务重复提交、过期接手、审核及导出测试。GitHub Actions 会运行这些检查并构建应用镜像。
+设置 TEST_DATABASE_URL 可额外运行 PostgreSQL 集成检查。测试在独立临时 schema 执行。GitHub Actions 会运行权限、模型格式、引用校验、任务重复提交、过期接手、审核及导出测试，再启动生产配置，通过 HTTPS 验证登录、商品写入和 Worker 心跳。
